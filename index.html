@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chef Irina × Google Ads — Кейс</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Bebas+Neue&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* ── Reset & tokens ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #09090e;
+      --surface:   #111119;
+      --surface2:  #181824;
+      --border:    #25253a;
+      --gold:      #f0a500;
+      --gold-dim:  rgba(240,165,0,.12);
+      --gold-glow: rgba(240,165,0,.35);
+      --white:     #f5f5f0;
+      --muted:     #7a7a8c;
+      --red:       #e05555;
+      --green:     #47c47a;
+      --r:         12px;
+      --r-lg:      20px;
+      --max:       960px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .6;
+    }
+
+    /* ── Utility ─────────────────────────────────────────────── */
+    .gold   { color: var(--gold); }
+    .muted  { color: var(--muted); }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      color: var(--muted);
+    }
+    .tag.gold-tag {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: var(--gold-dim);
+    }
+
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+
+    /* ── Entrance animations ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .reveal {
+      opacity: 0;
+      animation: fadeUp .7s cubic-bezier(.22,.84,.44,1) forwards;
+    }
+    .reveal-d1 { animation-delay: .1s; }
+    .reveal-d2 { animation-delay: .22s; }
+    .reveal-d3 { animation-delay: .36s; }
+    .reveal-d4 { animation-delay: .5s; }
+    .reveal-d5 { animation-delay: .64s; }
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 100px 0 80px;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    /* Big decorative "КЕЙС" */
+    .hero-bg-word {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-54%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(160px, 24vw, 320px);
+      line-height: 1;
+      color: var(--gold);
+      opacity: .04;
+      user-select: none;
+      letter-spacing: -.02em;
+      white-space: nowrap;
+    }
+    /* Radial glow */
+    .hero-glow {
+      position: absolute;
+      top: 20%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(240,165,0,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .hero-eyebrow-line {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .hero-eyebrow span {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: .96;
+      letter-spacing: -.03em;
+      margin-bottom: 8px;
+    }
+    .hero-title .client-name { display: block; }
+    .hero-title .x-mark {
+      color: var(--gold);
+      font-weight: 400;
+      font-size: .65em;
+    }
+    .hero-title .platform {
+      display: block;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .38em;
+      letter-spacing: .04em;
+      margin-top: 12px;
+    }
+
+    .hero-desc {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.65;
+      margin: 32px 0 44px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .hero-pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 10px 20px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color .2s;
+    }
+    .hero-pill:hover { border-color: var(--gold); }
+    .hero-pill .num { color: var(--gold); font-size: 16px; }
+
+    .hero-meta {
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item { display: flex; flex-direction: column; }
+    .hero-meta-item .label {
+      font-size: 11px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .hero-meta-item .value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    /* ── Section common ──────────────────────────────────────── */
+    .section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .section-num {
+      position: absolute;
+      right: -20px;
+      top: 40px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(120px, 18vw, 220px);
+      line-height: 1;
+      color: var(--gold);
+      opacity: .05;
+      user-select: none;
+      letter-spacing: -.02em;
+    }
+    .section-head {
+      margin-bottom: 56px;
+    }
+    .section-head .eyebrow {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .section-head h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+    }
+    .section-head p {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      max-width: 580px;
+      margin-top: 16px;
+    }
+
+    /* ── About client ────────────────────────────────────────── */
+    .client-card {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 40px;
+      align-items: start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 40px;
+    }
+    .client-logo {
+      width: 90px;
+      height: 90px;
+      border-radius: var(--r);
+      background: linear-gradient(135deg, #c48000, #f0a500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      color: #09090e;
+      letter-spacing: -.02em;
+      flex-shrink: 0;
+    }
+    .client-info h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+    .client-info .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+    .client-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .client-info .body {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ── Audit ───────────────────────────────────────────────── */
+    .audit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .audit-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .25s, transform .25s;
+    }
+    .audit-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .audit-card .campaign-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 14px;
+      color: var(--white);
+    }
+    .audit-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .audit-stat .num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px;
+      letter-spacing: -.01em;
+      line-height: 1;
+    }
+    .audit-stat .unit {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .audit-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: 'Syne', sans-serif;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+    .audit-status::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: block;
+    }
+    .audit-status.ok::before   { background: var(--green); }
+    .audit-status.ok           { color: var(--green); }
+    .audit-status.warn::before { background: var(--gold); }
+    .audit-status.warn         { color: var(--gold); }
+    .audit-status.dead::before { background: var(--red); }
+    .audit-status.dead         { color: var(--red); }
+
+    .finding-box {
+      background: linear-gradient(135deg, rgba(240,165,0,.07), rgba(240,165,0,.03));
+      border: 1px solid rgba(240,165,0,.25);
+      border-radius: var(--r);
+      padding: 24px 28px;
+      margin-bottom: 40px;
+    }
+    .finding-box .label {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .finding-box p { font-size: 15px; line-height: 1.7; color: var(--muted); }
+    .finding-box strong { color: var(--white); }
+
+    /* ── Stat cards ──────────────────────────────────────────── */
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 24px 20px;
+      text-align: center;
+      transition: border-color .25s, transform .25s;
+    }
+    .stat-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .stat-card .big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 5vw, 58px);
+      line-height: 1;
+      color: var(--gold);
+      letter-spacing: .01em;
+    }
+    .stat-card .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    /* ── Category list ───────────────────────────────────────── */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .cat-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      transition: border-color .2s, color .2s;
+    }
+    .cat-item:hover { border-color: var(--gold); color: var(--white); }
+    .cat-item .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* ── Run table ───────────────────────────────────────────── */
+    .run-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
+    }
+    .run-table th {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .run-table td {
+      padding: 16px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .run-table tr:last-child td { border-bottom: none; }
+    .run-table tr:hover td { background: var(--surface); }
+    .run-table .date-cell {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .run-table .big-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--white);
+      letter-spacing: .02em;
+      line-height: 1;
+    }
+    .run-table .small { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    .run-decisions {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .run-decisions h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .decision-list { list-style: none; }
+    .decision-list li {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 5px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .decision-list li::before {
+      content: '—';
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .decision-list li .decision-badge {
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
+    .decision-badge.target { background: rgba(71,196,122,.15); color: var(--green); }
+    .decision-badge.minus  { background: rgba(224,85,85,.15); color: var(--red); }
+
+    /* ── Campaign breakdown ──────────────────────────────────── */
+    .campaign-breakdown {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .camp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 24px;
+      transition: border-color .25s;
+    }
+    .camp-card:hover { border-color: var(--gold); }
+    .camp-card .camp-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .camp-card .camp-rsa-count {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      line-height: 1;
+      color: var(--white);
+    }
+    .camp-card .camp-rsa-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .camp-ad-groups { list-style: none; }
+    .camp-ad-groups li {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .camp-ad-groups li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* ── Extensions section ──────────────────────────────────── */
+    .ext-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .ext-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 28px 24px;
+      text-align: center;
+      transition: border-color .25s, transform .25s;
+    }
+    .ext-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .ext-card .ext-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      line-height: 1;
+      color: var(--gold);
+    }
+    .ext-card .ext-type {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--white);
+      margin-top: 4px;
+    }
+    .ext-card .ext-desc { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+    /* ── Summary ─────────────────────────────────────────────── */
+    .summary {
+      padding: 96px 0 120px;
+      position: relative;
+      overflow: hidden;
+    }
+    .summary-bg-word {
+      position: absolute;
+      left: -30px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(120px, 22vw, 300px);
+      line-height: 1;
+      color: var(--gold);
+      opacity: .04;
+      user-select: none;
+      white-space: nowrap;
+      letter-spacing: -.02em;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+    }
+    .summary-cell {
+      background: var(--bg);
+      padding: 36px 28px;
+      transition: background .25s;
+    }
+    .summary-cell:hover { background: var(--surface); }
+    .summary-cell .s-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(44px, 5vw, 60px);
+      line-height: 1;
+      color: var(--gold);
+    }
+    .summary-cell .s-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer .agency {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+    .footer .agency span { color: var(--gold); }
+    .footer .meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Real screenshot frames ─────────────────────────────── */
+    .screenshot-real {
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 64px rgba(0,0,0,.55);
+      margin-top: 40px;
+      transition: box-shadow .3s, transform .3s;
+      position: relative;
+    }
+    .screenshot-real:hover {
+      box-shadow: 0 28px 72px rgba(0,0,0,.7), 0 0 0 1px var(--gold);
+      transform: translateY(-3px);
+    }
+    .screenshot-real img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .screenshot-real .caption {
+      padding: 11px 20px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .screenshot-real .caption::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .screenshot-real-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .screenshot-real-grid .screenshot-real { margin-top: 0; }
+    /* highlight badge on screenshot */
+    .screenshot-real .badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--gold);
+      color: #09090e;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      letter-spacing: .04em;
+      box-shadow: 0 4px 16px rgba(240,165,0,.45);
+    }
+
+    /* ── Divider ─────────────────────────────────────────────── */
+    .section-divider {
+      width: 48px;
+      height: 2px;
+      background: var(--gold);
+      margin: 24px 0 40px;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .container { padding: 0 20px; }
+      .client-card { grid-template-columns: 1fr; }
+      .screenshot-grid { grid-template-columns: 1fr; }
+      .screenshot-real-grid { grid-template-columns: 1fr; }
+      .ext-grid { grid-template-columns: 1fr; }
+      .hero-meta { gap: 24px; }
+    }
+    @media (max-width: 500px) {
+      .hero-title { font-size: 40px; }
+      .section-head h2 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ HERO -->
+<section class="hero">
+  <div class="hero-bg-word">КЕЙС</div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-eyebrow reveal">
+        <div class="hero-eyebrow-line"></div>
+        <span>Google Ads · Дубай, ОАЭ · Май 2026</span>
+      </div>
+
+      <h1 class="hero-title reveal reveal-d1">
+        <span class="client-name">Chef Irina</span>
+        <span class="x-mark"> × </span>
+        <span class="client-name">Google Ads</span>
+        <span class="platform">Запуск и оптимизация рекламных кампаний</span>
+      </h1>
+
+      <p class="hero-desc reveal reveal-d2">
+        Облачная кухня в Dubai Silicon Oasis — русская и узбекская домашняя
+        кухня, доставка, кейтеринг, private chef. Работа с аккаунтом с нуля:
+        аудит, минусация, объявления, расширения.
+      </p>
+
+      <div class="hero-pills reveal reveal-d3">
+        <div class="hero-pill">
+          <span class="num">1 845</span> минус-ключей
+        </div>
+        <div class="hero-pill">
+          <span class="num">2 202</span> ключевых слова
+        </div>
+        <div class="hero-pill">
+          <span class="num">22</span> RSA-объявления
+        </div>
+        <div class="hero-pill">
+          <span class="num">3</span> Search-кампании
+        </div>
+      </div>
+
+      <div class="hero-meta reveal reveal-d4">
+        <div class="hero-meta-item">
+          <div class="label">Клиент</div>
+          <div class="value">Chef Irina UAE</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="label">Ниша</div>
+          <div class="value">Облачная кухня / доставка</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="label">Регион</div>
+          <div class="value">Dubai, UAE · AED</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="label">Платформа</div>
+          <div class="value">Google Ads Search</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="label">Начало работ</div>
+          <div class="value">04 мая 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ CLIENT -->
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">О клиенте</div>
+      <h2>Chef Irina — домашняя<br/>кухня в Дубае</h2>
+    </div>
+
+    <div class="client-card reveal reveal-d1">
+      <div class="client-logo">CI</div>
+      <div class="client-info">
+        <h3>Chef Irina UAE</h3>
+        <p class="subtitle">chefirinauae.com · Silicon Oasis, Dubai</p>
+        <div class="client-tags">
+          <span class="tag gold-tag">Облачная кухня</span>
+          <span class="tag">Русская кухня</span>
+          <span class="tag">Узбекская кухня</span>
+          <span class="tag">Доставка еды</span>
+          <span class="tag">Кейтеринг</span>
+          <span class="tag">Private Chef</span>
+          <span class="tag">Дубай</span>
+        </div>
+        <p class="body">
+          Домашняя кухня с доставкой в Дубае — борщ, плов, вареники, манты, самса,
+          блины. Основная аудитория — русскоязычные экспаты и мультикультурная
+          Dubai-аудитория. Работает напрямую через сайт и собственное приложение,
+          без агрегаторов. Дополнительные направления: кейтеринг на мероприятия,
+          услуги private chef, корпоративные ланчи для бизнеса.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ AUDIT -->
+<section class="section">
+  <div class="section-num">01</div>
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Этап 01 — 4 мая 2026</div>
+      <h2>Аудит аккаунта</h2>
+      <p>
+        Полная диагностика перед запуском. Найдены структурные проблемы:
+        only-exact негативы, «мёртвые» кампании и кампании без объявлений.
+      </p>
+    </div>
+
+    <div class="finding-box reveal">
+      <div class="label">Ключевая находка</div>
+      <p>
+        В аккаунте было <strong>262 негативных ключевых слова</strong>, но все —
+        в <strong>exact match</strong>. Это означает критический gap: вариации запросов
+        («talabat near me», «zomato dubai delivery») беспрепятственно проходили
+        и сливали бюджет. Требовался полный пересбор в phrase/broad match.
+      </p>
+    </div>
+
+    <div class="audit-grid reveal reveal-d1">
+      <div class="audit-card">
+        <div class="campaign-name">Search — Food Delivery (site)</div>
+        <div class="audit-stat">
+          <span class="num gold">146</span>
+          <span class="unit">конв. / мес</span>
+        </div>
+        <div class="audit-stat">
+          <span class="num" style="font-size:26px; color:var(--white)">1 811</span>
+          <span class="unit">AED spend</span>
+        </div>
+        <div class="audit-status ok">Основная рабочая</div>
+      </div>
+
+      <div class="audit-card">
+        <div class="campaign-name">Search — Food (maps)</div>
+        <div class="audit-stat">
+          <span class="num" style="color:var(--red)">2</span>
+          <span class="unit">клика</span>
+        </div>
+        <div class="audit-stat">
+          <span class="num" style="font-size:26px; color:var(--red)">0</span>
+          <span class="unit">конверсий</span>
+        </div>
+        <div class="audit-status dead">Требует перестройки</div>
+      </div>
+
+      <div class="audit-card">
+        <div class="campaign-name">Search — Другие услуги (site)</div>
+        <div class="audit-stat">
+          <span class="num" style="color:var(--red)">0</span>
+          <span class="unit">активности</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:10px;">
+          Кампания создана, но объявления отсутствовали
+        </div>
+        <div class="audit-status warn">Нужны RSA</div>
+      </div>
+
+      <div class="audit-card">
+        <div class="campaign-name">Performance Max — Silicon Oasis</div>
+        <div class="audit-stat">
+          <span class="num" style="color:var(--muted)">652</span>
+          <span class="unit">клика до паузы</span>
+        </div>
+        <div class="audit-stat">
+          <span class="num" style="font-size:26px;color:var(--muted)">30</span>
+          <span class="unit">конверсий до паузы</span>
+        </div>
+        <div class="audit-status warn">Paused — ROI был</div>
+      </div>
+    </div>
+
+    <div class="screenshot-real reveal reveal-d2">
+      <img src="photo_2026-05-12_12-18-44.jpg" alt="Список кампаний в Google Ads" />
+      <div class="caption">Google Ads — список кампаний: бюджеты и конверсии</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ MINUS -->
+<section class="section">
+  <div class="section-num">02</div>
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Этап 02 — 4 мая 2026</div>
+      <h2>Система минус-фраз</h2>
+      <p>
+        Построена с нуля: 1 845 минус-слов в аккаунте, 24-шаговый алгоритм
+        классификации, раздельная маршрутизация по трём кампаниям.
+      </p>
+    </div>
+
+    <div class="stat-cards reveal">
+      <div class="stat-card">
+        <div class="big">1 845</div>
+        <div class="label">Минус-слов<br/>в аккаунте</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">2 202</div>
+        <div class="label">Ключевых слов<br/>в кампаниях</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">24</div>
+        <div class="label">Правила<br/>классификации</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">15</div>
+        <div class="label">Категорий<br/>минусации</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">3</div>
+        <div class="label">Кампании с<br/>раздельной логикой</div>
+      </div>
+    </div>
+
+    <div class="section-head reveal" style="margin-bottom:24px;">
+      <h2 style="font-size:22px;">15 категорий минусации</h2>
+    </div>
+
+    <div class="cat-grid reveal reveal-d1">
+      <div class="cat-item"><div class="dot"></div>Конкуренты-агрегаторы (Talabat, Zomato, Noon Food...)</div>
+      <div class="cat-item"><div class="dot"></div>Конкуренты-сервисы доставки (Hello Chef, Calo UAE...)</div>
+      <div class="cat-item"><div class="dot"></div>Конкуренты-рестораны (100+ конкретных заведений)</div>
+      <div class="cat-item"><div class="dot"></div>Неправильная кухня (шаурма, бирьяни, суши, пад-тай...)</div>
+      <div class="cat-item"><div class="dot"></div>Неправильное гео — дальняя (Индия, Пакистан, Турция...)</div>
+      <div class="cat-item"><div class="dot"></div>Неправильное гео — эмираты (Abu Dhabi, Sharjah...)</div>
+      <div class="cat-item"><div class="dot"></div>HR / вакансии</div>
+      <div class="cat-item"><div class="dot"></div>Дайн-ин без сигнала доставки</div>
+      <div class="cat-item"><div class="dot"></div>Фастфуд-сети (KFC, McDonald's, Burger King...)</div>
+      <div class="cat-item"><div class="dot"></div>Неправильный продукт (grocery, торты, замороженное...)</div>
+      <div class="cat-item"><div class="dot"></div>Proximity-фильтры (within X km)</div>
+      <div class="cat-item"><div class="dot"></div>Бюджетные запросы (cheap, discount, voucher...)</div>
+      <div class="cat-item"><div class="dot"></div>Подписочные модели (meal subscription, meal kit...)</div>
+      <div class="cat-item"><div class="dot"></div>Поиск приложений (food delivery app, apk...)</div>
+      <div class="cat-item"><div class="dot"></div>Свинина (pork) — Dubai halal market</div>
+    </div>
+
+    <div class="finding-box reveal reveal-d2" style="margin-bottom:0;">
+      <div class="label">Специфика: арабский язык</div>
+      <p>
+        Система поддерживает классификацию арабоязычных запросов:
+        <strong>توصيل</strong> (доставка), <strong>مطاعم</strong> (рестораны),
+        <strong>تطبيقات</strong> (приложения), <strong>طلبات</strong> (Talabat на арабском).
+        Запросы с арабскими delivery-сигналами → target; с конкурентами или apps → minus.
+      </p>
+    </div>
+
+    <div class="screenshot-real-grid reveal reveal-d3">
+      <div class="screenshot-real">
+        <div class="badge">1 845 минус-слов</div>
+        <img src="photo_2026-05-12_12-19-07.jpg" alt="Минус-слова в Google Ads" />
+        <div class="caption">Минус-слова — вкладка аккаунта: 1 845 выбрано</div>
+      </div>
+      <div class="screenshot-real">
+        <div class="badge">2 202 ключа</div>
+        <img src="photo_2026-05-12_12-19-02.jpg" alt="Ключевые слова" />
+        <div class="caption">Ключевые слова — 2 202 фразовых и точных соответствий</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ SEARCH TERMS -->
+<section class="section">
+  <div class="section-num">03</div>
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Этап 03 — 5–6 мая 2026</div>
+      <h2>Анализ поисковых<br/>запросов</h2>
+      <p>
+        Ежедневные прогоны search terms: классификация каждого запроса,
+        принятие решений по пограничным случаям, применение через API.
+      </p>
+    </div>
+
+    <div class="stat-cards reveal" style="grid-template-columns: repeat(auto-fill, minmax(130px,1fr));">
+      <div class="stat-card">
+        <div class="big">650+</div>
+        <div class="label">Запросов<br/>проанализировано</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">2</div>
+        <div class="label">Ежедневных<br/>прогона</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">22</div>
+        <div class="label">Новых минусов<br/>добавлено</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">16</div>
+        <div class="label">Review-решений<br/>принято</div>
+      </div>
+    </div>
+
+    <table class="run-table reveal reveal-d1">
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Запросов в выгрузке</th>
+          <th>Target</th>
+          <th>Dup (уже в мастере)</th>
+          <th>Новых минусов</th>
+          <th>Review</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="date-cell">05 мая</td>
+          <td><div class="big-num">218</div><div class="small">LAST_7_DAYS</div></td>
+          <td><div class="big-num">130</div></td>
+          <td><div class="big-num">74</div></td>
+          <td><div class="big-num" style="color:var(--red)">9</div></td>
+          <td><div class="big-num">4</div><div class="small">→ все target</div></td>
+        </tr>
+        <tr>
+          <td class="date-cell">06 мая</td>
+          <td><div class="big-num">212</div><div class="small">LAST_7_DAYS</div></td>
+          <td><div class="big-num">114</div></td>
+          <td><div class="big-num">72</div></td>
+          <td><div class="big-num" style="color:var(--red)">13</div></td>
+          <td><div class="big-num">12</div><div class="small">→ все minus</div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="reveal reveal-d2">
+      <div class="run-decisions">
+        <h4>Review 05-05 → Target (примеры)</h4>
+        <ul class="decision-list">
+          <li><code>canape dubai</code> <span class="decision-badge target">target</span> — finger food = кейтеринг</li>
+          <li><code>commander a manger dubai</code> <span class="decision-badge target">target</span> — FR: заказать еду</li>
+          <li><code>nice take away food</code> <span class="decision-badge target">target</span> — takeaway = delivery</li>
+          <li><code>online restaurant</code> <span class="decision-badge target">target</span> — online ordering intent</li>
+        </ul>
+      </div>
+      <div class="run-decisions">
+        <h4>Review 06-06 → Minus (примеры)</h4>
+        <ul class="decision-list">
+          <li><code>grand zor uzbek fusion dubai</code> <span class="decision-badge minus">minus</span> — конкурент узбекской кухни</li>
+          <li><code>caravella catering dubai</code> <span class="decision-badge minus">minus</span> — конкурент кейтеринга</li>
+          <li><code>keta food delivery</code> <span class="decision-badge minus">minus</span> — wrong product</li>
+          <li><code>hadoota masreya delivery</code> <span class="decision-badge minus">minus</span> — конкурент</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="finding-box reveal reveal-d3" style="margin-top:32px;">
+      <div class="label">Применение</div>
+      <p>
+        Все изменения применены через <strong>Google Ads API (mutate)</strong>.
+        05-05: добавлено 8 из 9 терминов (один уже присутствовал).
+        06-06 прогон 1: <strong>35 операций</strong> верифицировано.
+        06-06 прогон 2 (review): <strong>36 операций</strong>, все 12 терминов подтверждены.
+      </p>
+    </div>
+
+    <div class="screenshot-real reveal reveal-d4">
+      <img src="photo_2026-05-12_12-19-11.jpg" alt="Поисковые запросы в Google Ads" />
+      <div class="caption">Поисковые запросы — реальный трафик: private chef dubai, catering dubai, food order near me</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ RSA -->
+<section class="section">
+  <div class="section-num">04</div>
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Этап 04 — 8 мая 2026</div>
+      <h2>RSA-объявления</h2>
+      <p>
+        Написано 22 RSA для всех ad groups всех трёх кампаний.
+        Двуязычный формат: английский + русский. 352 уникальных элемента.
+      </p>
+    </div>
+
+    <div class="stat-cards reveal">
+      <div class="stat-card">
+        <div class="big">22</div>
+        <div class="label">RSA написано</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">352</div>
+        <div class="label">Уникальных заголовков и описаний</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">11</div>
+        <div class="label">Ad groups покрыто</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">2</div>
+        <div class="label">Языка: EN + RU</div>
+      </div>
+    </div>
+
+    <div class="campaign-breakdown reveal reveal-d1">
+      <div class="camp-card">
+        <div class="camp-name">Search — Food Delivery (site)</div>
+        <div class="camp-rsa-count">8</div>
+        <div class="camp-rsa-label">RSA-объявлений</div>
+        <ul class="camp-ad-groups">
+          <li>Home Style Food</li>
+          <li>Food (общий)</li>
+          <li>Slavic / Russian</li>
+          <li>Uzbek Dishes</li>
+          <li>Lunch / Dinner</li>
+          <li>Food Court Near Me</li>
+          <li>Plov</li>
+          <li>Near Me (RU) — русскоязычный</li>
+        </ul>
+      </div>
+
+      <div class="camp-card">
+        <div class="camp-name">Search — Food (maps)</div>
+        <div class="camp-rsa-count">8</div>
+        <div class="camp-rsa-label">RSA-объявлений</div>
+        <ul class="camp-ad-groups">
+          <li>Home Style Food</li>
+          <li>Food (Near Me)</li>
+          <li>Slavic / Russian</li>
+          <li>Uzbek Dishes</li>
+          <li>Lunch / Dinner</li>
+          <li>Food Court Near Me</li>
+          <li>Plov</li>
+          <li>Near Me (RU) — Maps</li>
+        </ul>
+      </div>
+
+      <div class="camp-card">
+        <div class="camp-name">Search — Другие услуги</div>
+        <div class="camp-rsa-count">6</div>
+        <div class="camp-rsa-label">RSA-объявлений</div>
+        <ul class="camp-ad-groups">
+          <li>Food Court (B2B)</li>
+          <li>Private Chef</li>
+          <li>Uzbek Dishes (Catering)</li>
+          <li>Plov (Event)</li>
+          <li>Кейтеринг (RU)</li>
+          <li>Корпоративные ланчи (RU)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="finding-box reveal reveal-d2">
+      <div class="label">Пример заголовков — ad group «Slavic / Russian»</div>
+      <p>
+        <strong>EN:</strong> Russian Food Dubai Delivery · Authentic Slavic Cuisine · Pelmeni, Borsch &amp; More · Borscht, Manti &amp; Blini · Vareniki &amp; Pelmeni Dubai
+        <br/><br/>
+        <strong>RU:</strong> Домашняя Русская Кухня · Заказать Русскую Еду · Настоящая Русская Кухня с Доставкой по Дубаю
+      </p>
+    </div>
+
+    <div class="screenshot-real reveal reveal-d3">
+      <img src="photo_2026-05-12_12-18-57.jpg" alt="Группы объявлений в Google Ads" />
+      <div class="caption">Группы объявлений — все ad groups активны (зелёный статус)</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ EXTENSIONS -->
+<section class="section">
+  <div class="section-num">05</div>
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Этап 05 — 8 мая 2026</div>
+      <h2>Расширения кампаний</h2>
+      <p>
+        Все три кампании получили полный набор assets:
+        sitelinks, callouts и structured snippets с описаниями.
+      </p>
+    </div>
+
+    <div class="ext-grid reveal">
+      <div class="ext-card">
+        <div class="ext-num">12</div>
+        <div class="ext-type">Sitelinks</div>
+        <div class="ext-desc">4 на каждую кампанию · с заголовком и двумя строками описания</div>
+      </div>
+      <div class="ext-card">
+        <div class="ext-num">18</div>
+        <div class="ext-type">Callouts</div>
+        <div class="ext-desc">6 на каждую кампанию · USP клиента</div>
+      </div>
+      <div class="ext-card">
+        <div class="ext-num">6</div>
+        <div class="ext-type">Structured Snippets</div>
+        <div class="ext-desc">2 набора на кампанию · Cuisine, Dishes, Services, Locations</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:40px;" class="reveal reveal-d1">
+      <div class="run-decisions">
+        <h4>Food Delivery — Sitelinks</h4>
+        <ul class="decision-list">
+          <li>Order Now → order.chefirina.kitchen</li>
+          <li>See Our Menu → 98+ homemade dishes</li>
+          <li>About Chef Irina</li>
+          <li>Contact Us</li>
+        </ul>
+      </div>
+      <div class="run-decisions">
+        <h4>Food Delivery — Callouts</h4>
+        <ul class="decision-list">
+          <li>100% Homemade</li>
+          <li>Fresh Daily</li>
+          <li>Cash on Delivery</li>
+          <li>Free Delivery Available</li>
+          <li>Russian &amp; Uzbek Cuisine</li>
+          <li>Order in Minutes</li>
+        </ul>
+      </div>
+      <div class="run-decisions">
+        <h4>Другие услуги — Sitelinks</h4>
+        <ul class="decision-list">
+          <li>Book Catering → WhatsApp</li>
+          <li>Private Chef → services page</li>
+          <li>Corporate Lunch</li>
+          <li>Order Food Online</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="screenshot-real reveal reveal-d2">
+      <img src="photo_2026-05-12_12-18-44.jpg" alt="Кампании Google Ads — структура аккаунта" />
+      <div class="caption">Полная структура аккаунта — 3 Search-кампании с настроенными бюджетами и конверсиями</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ SUMMARY -->
+<section class="summary">
+  <div class="summary-bg-word">ИТОГО</div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-head reveal" style="margin-bottom:48px;">
+      <div class="eyebrow">Итого в цифрах</div>
+      <h2>Объём выполненных<br/>работ</h2>
+      <p>Все изменения применены в Google Ads аккаунте, подтверждены API mutate.</p>
+    </div>
+
+    <div class="summary-grid reveal reveal-d1">
+      <div class="summary-cell">
+        <div class="s-num">1 845</div>
+        <div class="s-label">Минус-слов в аккаунте (подтверждено скриншотом)</div>
+      </div>
+      <div class="summary-cell">
+        <div class="s-num">2 202</div>
+        <div class="s-label">Ключевых слов настроено в кампаниях</div>
+      </div>
+      <div class="summary-cell">
+        <div class="s-num">24</div>
+        <div class="s-label">Правила приоритетной классификации запросов</div>
+      </div>
+      <div class="summary-cell">
+        <div class="s-num">15</div>
+        <div class="s-label">Категорий минусации с полными списками</div>
+      </div>
+      <div class="summary-cell">
+        <div class="s-num">650+</div>
+        <div class="s-label">Поисковых запросов проанализировано вручную</div>
+      </div>
+      <div class="summary-cell">
+        <div class="s-num">22</div>
+        <div class="s-label">RSA-объявлений написано (EN + RU)</div>
+      </div>
+      <div class="summary-cell">
+        <div class="s-num">352</div>
+        <div class="s-label">Уникальных заголовков и описаний</div>
+      </div>
+      <div class="summary-cell">
+        <div class="s-num">36</div>
+        <div class="s-label">Расширений кампаний (sitelinks + callouts + snippets)</div>
+      </div>
+      <div class="summary-cell">
+        <div class="s-num">3</div>
+        <div class="s-label">Search-кампании полностью настроены</div>
+      </div>
+      <div class="summary-cell">
+        <div class="s-num">71</div>
+        <div class="s-label">API mutate операций применено (05-06 прогоны)</div>
+      </div>
+    </div>
+
+    <div class="screenshot-real-grid reveal reveal-d2" style="margin-top:48px;">
+      <div class="screenshot-real">
+        <img src="photo_2026-05-12_12-19-11.jpg" alt="Поисковые запросы" />
+        <div class="caption">Поисковые запросы — реальный целевой трафик</div>
+      </div>
+      <div class="screenshot-real">
+        <div class="badge">1 845 минус-слов</div>
+        <img src="photo_2026-05-12_12-19-07.jpg" alt="Минус-слова" />
+        <div class="caption">Минус-слова — полная защита бюджета</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer">
+      <div class="agency">OpenClaw <span>·</span> Google Ads Management</div>
+      <div class="meta">Chef Irina UAE · Dubai, Silicon Oasis · Май 2026</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* Scroll-triggered reveal */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animationPlayState = 'running';
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
